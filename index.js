@@ -4,6 +4,10 @@ const app = express();
 const port = process.env.PORT || 8080;
 const pointsOfInterestRouter = require('./routes/pointsOfInterest');
 const pointsOfInterestRegionRouter = require('./routes/pointsOfInterestRegion');
+const pointsOfInterestPostRouter = require('./routes/pointsOfInterestPost');
+const pointsOfInterestRecommendRouter = require('./routes/pointsOfInterestRecommend');
+
+app.set("view engine", "ejs");
 
 app.use(bodyParser.json());
 app.use(
@@ -12,13 +16,15 @@ app.use(
   })
 );
 
-app.get('/', (req, res) => {
-  res.json({'message': 'ok'});
-})
+app.use('/', require('./routes/index.js'));
 
 app.use('/poi', pointsOfInterestRouter);
 
 app.use('/poi/region', pointsOfInterestRegionRouter);
+
+app.use('/poi/post', pointsOfInterestPostRouter);
+
+app.use('/poi/recommend', pointsOfInterestRecommendRouter);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {

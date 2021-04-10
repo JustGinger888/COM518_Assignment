@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <form onsubmit="ajaxAdd()" id="poiAdd">
+      <table>
+          <tr class="col-6">
+              <td>Name: <input type="text" name="name" id="name" value="test name" required></td>
+              <td>Type: <input type="text" name="type" id="type" value="test type" required></td>
+          </tr>
+          <tr class="col-6">
+              <td>Country: <input type="text" name="country" id="country" value="test country" required></td>
+              <td>Region: <input type="text" name="region" id="region" value="test region" required></td>
+          </tr>
+          <tr class="col-6">
+              <td>Coordinates: Longitude -> <input type="number" name="lon" id="lon" value="30" required> Latitude ->
+                  <input type="number" name="lat" id="lat" value="30" required>
+              </td>
+          </tr>
+          <tr class="col-6">
+              <td>Description: <input type="text" name="description" id="description" value="test description" required>
+              </td>
+          </tr>
+      </table>
+      <button type="submit">Submit</button>
+  </form>
+    <ul id="results"></ul>
+  </body>
+  <script>
+    document
+      .getElementById("poiAdd")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+      });
+
+    async function ajaxAdd() {
+      const body = {
+        name: document.getElementById("name").value,
+        type: document.getElementById("type").value,
+        country: document.getElementById("country").value,
+        region: document.getElementById("region").value,
+        lat: document.getElementById("lat").value,
+        lon: document.getElementById("lon").value,
+        description: document.getElementById("description").value,
+      };
+      const response = await fetch("/poi/post", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    }
+  </script>
+</html>

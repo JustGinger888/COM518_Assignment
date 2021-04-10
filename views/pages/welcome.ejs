@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <form onsubmit="ajaxSearch()" id="regionSearch">
+      <input type="text" id="region" required autocomplete="off" />
+
+      <button type="submit">Region Search</button>
+    </form>
+
+
+    <ul id="results"></ul>
+
+    <script>
+      document
+        .getElementById("regionSearch")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+        });
+
+      async function ajaxSearch() {
+        let region = document.getElementById("region").value;
+        let response = await fetch(
+          `http://localhost:8080/poi/region/${region}`
+        );
+        let text = await response.json();
+        console.log(text);
+        if (text.data.length == 0) {
+          alert("There are no places associated with inputted regions");
+        } else {
+          text.data.forEach((element) => {
+            document.getElementById(
+              "results"
+            ).innerHTML += `<li>${element.id} | Name: ${element.name} | Recommendations: ${element.recommendations} <button onclick="ajaxRecommend(${element.id})">Recommend</button></li>`;
+          });
+        }
+      }
+
+      async function ajaxRecommend(id) {
+        const response = await fetch(
+          `http://localhost:8080/poi/recommend/${id}`
+        );
+      }
+    </script>
+  </body>
+</html>
