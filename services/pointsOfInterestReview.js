@@ -8,7 +8,7 @@ async function create(poi){
     (poi_id, review) 
     VALUES 
     (?,?)`, 
-    [poi.name, poi.description]
+    [poi.name, poi.review]
   );
 
   let message = 'Error in creating POI';

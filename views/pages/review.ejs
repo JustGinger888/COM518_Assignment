@@ -1,12 +1,12 @@
-<div class="container">
-  <form onsubmit="ajaxReview()" id="poiAdd">
+<div class="container"></div>
+  <form onsubmit="ajaxReview()" id="poiReview">
     <div class="form-group">
 
       Description:
       <input class="form-control mr-sm-1 mb-3" type="text" id="id" required autocomplete="off"
         placeholder="Enter an id">
-      <textarea name="description" id="description" class="form-control" rows="3"
-        placeholder="Place Of Interest Description" required></textarea>
+      <textarea name="review" id="review" class="form-control" rows="3"
+        placeholder="Place Of Interest review" required></textarea>
     </div>
     <button class="btn btn-outline-primary w-100" type="submit">Submit</button>
   </form>
@@ -14,7 +14,7 @@
 <ul id="results"></ul>
 <script>
   document
-    .getElementById("poiAdd")
+    .getElementById("poiReview")
     .addEventListener("submit", function (event) {
       event.preventDefault();
     });
@@ -22,7 +22,7 @@
   async function ajaxReview() {
     const body = {
       id: document.getElementById("id").value,
-      description: document.getElementById("description").value,
+      review: document.getElementById("review").value,
     };
     const response = await fetch("/poi/review", {
       method: "POST",

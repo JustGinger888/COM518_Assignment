@@ -61,7 +61,16 @@
 
                     L.marker([element.lat, element.lon])
                         .addTo(map)
-                        .bindPopup(`Name: ${element.name} | ${element.description}`);
+                        .bindPopup(`<div>${element.name}: ${element.description}</div>
+                            <div>
+                            <form onsubmit="ajaxReview(${element.id})" id="poiReview">
+                                <div class="form-group">
+                                <textarea name="review" id="review" class="form-control" rows="3"
+                                    placeholder="Enter Review Here" required></textarea>
+                                </div>
+                                <button class="btn btn-outline-primary w-100" type="submit">Submit</button>
+                            </form>
+                        </div>`);
                 });
             }
         }
@@ -189,6 +198,26 @@
                 },
                 body: JSON.stringify(body),
             });
+
+            document
+                .getElementById("poiReview")
+                .addEventListener("submit", function (event) {
+                    event.preventDefault();
+                });
+
+            async function ajaxReview(id) {
+                const body = {
+                    id: id,
+                    review: document.getElementById("review").value,
+                };
+                const response = await fetch("/poi/review", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(body),
+                });
+            }
         }
     </script>
     </body>
