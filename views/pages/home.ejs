@@ -88,7 +88,7 @@
         function onMapClick(e) {
             popup
                 .setLatLng(e.latlng)
-                .setContent('Add Marker at ' + e.latlng.toString() +
+                .setContent('Details for ' + e.latlng.toString() +
                     `<form onsubmit="ajaxAdd()" id="poiAdd">
                     <div class="form-group">
                         <input
@@ -150,12 +150,12 @@
                                 id="description"
                                 class="form-control" 
                                 rows="3"
-                                placeholder="Place Of Interest Description"
+                                placeholder="Point Of Interest Description"
                                 required></textarea>
                             </div>
                         </div>
                     </div>
-                <button class="btn btn-outline-primary" type="submit">Submit</button>
+                <button class="btn btn-outline-primary w-100" type="submit">Submit</button>
                 </form>`)
                 .openOn(map);
             console.log(e.latlng);

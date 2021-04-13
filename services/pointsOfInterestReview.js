@@ -4,11 +4,11 @@ const config = require('../config');
 
 async function create(poi){
   const result = await db.query(
-    `INSERT INTO pointsofinterest 
-    (name, type, country, region, lon, lat, description, recommendations) 
+    `INSERT INTO poi_reviews 
+    (poi_id, review) 
     VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?)`, 
-    [poi.name,poi.type,poi.country,poi.region,poi.lon,poi.lat,poi.description, 1]
+    (?,?)`, 
+    [poi.name, poi.description]
   );
 
   let message = 'Error in creating POI';

@@ -6,6 +6,7 @@ const pointsOfInterestRouter = require('./routes/pointsOfInterest');
 const pointsOfInterestRegionRouter = require('./routes/pointsOfInterestRegion');
 const pointsOfInterestPostRouter = require('./routes/pointsOfInterestPost');
 const pointsOfInterestRecommendRouter = require('./routes/pointsOfInterestRecommend');
+const pointsOfInterestReviewRouter = require('./routes/pointsOfInterestReview');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -76,6 +77,8 @@ app.use('/poi/region', pointsOfInterestRegionRouter);
 app.use('/poi/post', pointsOfInterestPostRouter);
 
 app.use('/poi/recommend', pointsOfInterestRecommendRouter);
+
+app.use('/poi/review', pointsOfInterestReviewRouter);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {

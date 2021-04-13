@@ -18,5 +18,6 @@ router.get('/home', ensureAuthenticated, (req, res) =>
 router.get('/region', ensureAuthenticated, (req, res) => res.render('pages/region'));
 router.get('/add', ensureAuthenticated, (req, res) => res.render('pages/addPointsOfInterest'));
 router.get('/map', ensureAuthenticated, (req, res) => res.render('pages/map'));
+router.get('/review', ensureAuthenticated, (req, res) => res.render('pages/review'));
 
 module.exports = router;
