@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-</head>
-
-<body>
-  <form onsubmit="ajaxSearch()" class="container mt-3" id="regionSearch">
+<div class="container">
+<%- include('../common/navbar') -%>
+  <form onsubmit="ajaxSearch()" class=" mt-3" id="regionSearch">
     <div class="form-inline d-flex">
       <input class="form-control mr-sm-1" type="text" id="region" required autocomplete="off"
         placeholder="Enter a Region">
@@ -21,6 +12,7 @@
   <div class="container mt-2">
     <ul id="results" class="list-group"></ul>
   </div>
+</div>
   <script>
     document
       .getElementById("regionSearch")
@@ -53,6 +45,3 @@
       );
     }
   </script>
-</body>
-
-</html>

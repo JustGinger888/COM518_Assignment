@@ -5,11 +5,7 @@
                 <div class="mt-2" id="map" style="width: auto; height: 98vh; "></div>
             </div>
             <div class="col-3 bg-light ml-auto " style="height: 100vh">
-                <p class="text-right text-color-secondary">
-                    <a class="btn btn-sm btn-secondary" href="/region">Search</a>
-                    <a class="btn btn-sm btn-secondary" href="/add">Add</a>
-                    <a class="btn btn-sm btn-secondary" href="/users/logout">Logout</a>
-                </p>
+                <%- include('../common/navbar') -%>
                 <h6 class="text-center ">Welcome <%= user.name %></h6>
                 <h2 class=" text-center">Points Of Interest</h2>
                 <hr>
@@ -67,7 +63,7 @@
                             <div>
                             <form onsubmit="ajaxReview(${element.id})" id="poiReview">
                                 <div class="form-group">
-                                <textarea name="review" id="review" class="form-control" rows="3"
+                                <textarea name="review" id="review" class="form-control mt-2" rows="3"
                                     placeholder="Enter Review Here" required></textarea>
                                 </div>
                                 <button class="btn btn-outline-primary w-100" type="submit">Submit</button>
@@ -140,11 +136,11 @@
                 Coordinates (lng & lat)
             </div>
             <div class="col-6">
-                <input type="text" name="lon" id="lon" 
+                <input type="text" name="lon" id="lon" disabled
                 class="form-control my-1" value="${e.latlng.lng}" required />
             </div>
             <div class="col-6">
-                <input type="number" name="lat" id="lat" 
+                <input type="number" name="lat" id="lat" disabled
                 class="form-control my-1" value="${e.latlng.lat}" required />
             </div>
         </div>
