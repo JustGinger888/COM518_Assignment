@@ -58,7 +58,7 @@
               .addTo(map)
               .bindPopup(`${element.id} | Name: ${element.name} | ${element.description}`);
 
-            
+            var popup = L.popup();
           });
         }
       }
@@ -73,7 +73,6 @@
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 18,
-        minZoom: 2,
         attribution:
           "Map data &copy; " +
           '<a href="http://openstreetmap.org">OpenStreetMap</a>',
@@ -81,12 +80,10 @@
         noWrap: true
       }).addTo(map);
 
-      var popup = L.popup();
-
       function onMapClick(e) {
         popup
           .setLatLng(e.latlng)
-          .setContent('Add map at ' + e.latlng.toString())
+          .setContent("You clicked the map at " + e.latlng.toString())
           .openOn(map);
       }
 

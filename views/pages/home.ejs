@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+    <script src="https://kit.fontawesome.com/15f38096fb.js" crossorigin="anonymous"></script>
+
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-9" style="position: fixed;">
+                <div class="mt-2" id="map" style="width: auto; height: 700px; "></div>
+            </div>
+            <div class="col-3 bg-light ml-auto " style="height: 100vh">
+                <h2 class="pt-2 text-center">Points Of Interest</h2>
+                <hr>
+                <form class="form-inline d-flex justify-content-center" onsubmit="ajaxSearch()" id="regionSearch">
+                    <input class="form-control mr-sm-1" type="text" id="region" required autocomplete="off"
+                        placeholder="Enter Region">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+                <hr>
+                <ul id="results" class="list-group"></ul>
+            </div>
+
+
+
+        </div>
+    </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script>
+        document
+            .getElementById("regionSearch")
+            .addEventListener("submit", function (event) {
+                event.preventDefault();
+            });
+        async function ajaxSearch() {
+
+
+            let region = document.getElementById("region").value;
+            let response = await fetch(
+                `http://localhost:8080/poi/region/${region}`
+            );
+            let text = await response.json();
+            console.log(text);
+            if (text.data.length == 0) {
+                alert("There are no places associated with inputted regions");
+            } else {
+                text.data.forEach((element) => {
+                    document.getElementById(
+                            "results"
+                        ).innerHTML +=
+                        `<li class="list-group-item">
+                            <div class="row">
+                                <div class="col-7">
+                                    ${element.name}
+                                </div>
+                                <div class="col-5">
+                                    <button class=" btn btn-sm btn-primary" onclick="ajaxRecommend(${element.id})">Recommend <i class="pl-2 fas fa-heart"></i></button>    
+                                </div>
+                            </div>       
+                            </li>`;
+
+                    L.marker([element.lat, element.lon])
+                        .addTo(map)
+                        .bindPopup(`Name: ${element.name} | ${element.description}`);
+
+                });
+            }
+        }
+
+        async function ajaxRecommend(id) {
+            const response = await fetch(
+                `http://localhost:8080/poi/recommend/${id}`
+            );
+        }
+
+        const map = L.map("map").setView([40.505, -0.0], 2);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 18,
+            minZoom: 2,
+            attribution: "Map data &copy; " +
+                '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+            id: "examples.map-i875mjb7",
+            noWrap: true
+        }).addTo(map);
+
+        var popup = L.popup();
+
+        function onMapClick(e) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent('Add Marker at ' + e.latlng.toString() +
+                    `<form onsubmit="ajaxAdd()" id="poiAdd">
+        <div class="form-group">
+            <input
+              type="text"
+              class="form-control my-1"
+              name="name"
+              id="name"
+              placeholder="Name"
+              required
+            />
+            <input
+              type="text"
+              name="type"
+              id="type"
+              class="form-control my-1"
+              placeholder="Type"
+              required
+            />
+            <input
+              type="text"
+              name="country"
+              id="country"
+              class="form-control my-1"
+              placeholder="Country"
+              required
+            />
+            <input
+              type="text"
+              name="region"
+              id="region"
+              class="form-control my-1"
+              placeholder="Region"
+              required
+            />
+            <div class="row">
+                <div class="col-12 mt-1">
+                    Coordinates (lng & lat)
+                </div>
+                <div class="col-6">
+                    <input type="text" name="lon" id="lon" 
+                    class="form-control my-1" value="${e.latlng.lng}" required />
+                </div>
+                <div class="col-6">
+                    <input type="number" name="lat" id="lat" 
+                    class="form-control my-1" value="${e.latlng.lat}" required />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-1">
+                    Description:
+                </div>
+                <div class="col-12">
+                    <textarea 
+                    name="description"
+                    id="description"
+                    class="form-control" 
+                    rows="3"
+                    placeholder="Place Of Interest Description"
+                    required></textarea>
+                </div>
+            </div>
+        </div>
+      <button class="btn btn-outline-primary" type="submit">Submit</button>
+    </form>`)
+                .openOn(map);
+            console.log(e.latlng);
+        }
+
+        map.on("click", onMapClick);
+
+        document
+            .getElementById("poiAdd")
+            .addEventListener("submit", function (event) {
+                event.preventDefault();
+            });
+
+        async function ajaxAdd() {
+            const body = {
+                name: document.getElementById("name").value,
+                type: document.getElementById("type").value,
+                country: document.getElementById("country").value,
+                region: document.getElementById("region").value,
+                lat: document.getElementById("lat").value,
+                lon: document.getElementById("lon").value,
+                description: document.getElementById("description").value,
+            };
+            const response = await fetch("/poi/post", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(body),
+            });
+        }
+    </script>
+</body>
+
+</html>
