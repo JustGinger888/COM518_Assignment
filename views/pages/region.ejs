@@ -1,52 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <form onsubmit="ajaxSearch()" id="regionSearch">
-      <input type="text" id="region" required autocomplete="off" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
 
-      <button type="submit">Region Search</button>
-    </form>
+<body>
+  <form onsubmit="ajaxSearch()" class="container mt-3" id="regionSearch">
+    <div class="form-inline d-flex">
+      <input class="form-control mr-sm-1" type="text" id="region" required autocomplete="off"
+        placeholder="Enter a Region">
+      <button class="btn btn-outline-primary" type="submit">Search</button>
+    </div>
+  </form>
 
 
-    <ul id="results"></ul>
+  <div class="container mt-2">
+    <ul id="results" class="list-group"></ul>
+  </div>
+  <script>
+    document
+      .getElementById("regionSearch")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+      });
 
-    <script>
-      document
-        .getElementById("regionSearch")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-        });
-
-      async function ajaxSearch() {
-        let region = document.getElementById("region").value;
-        let response = await fetch(
-          `http://localhost:8080/poi/region/${region}`
-        );
-        let text = await response.json();
-        console.log(text);
-        if (text.data.length == 0) {
-          alert("There are no places associated with inputted regions");
-        } else {
-          text.data.forEach((element) => {
-            document.getElementById(
+    async function ajaxSearch() {
+      let region = document.getElementById("region").value;
+      let response = await fetch(
+        `http://localhost:8080/poi/region/${region}`
+      );
+      let text = await response.json();
+      console.log(text);
+      if (text.data.length == 0) {
+        alert("There are no places associated with inputted regions");
+      } else {
+        text.data.forEach((element) => {
+          document.getElementById(
               "results"
-            ).innerHTML += `<li>${element.id} | Name: ${element.name} | Recommendations: ${element.recommendations} <button onclick="ajaxRecommend(${element.id})">Recommend</button></li>`;
-          });
-        }
+            ).innerHTML +=
+            `<li class="list-group-item">${element.id} | Name: ${element.name} | Recommendations: ${element.recommendations} <button class="btn ml-2 btn-primary" onclick="ajaxRecommend(${element.id})">Recommend</button></li>`;
+        });
       }
+    }
 
-      async function ajaxRecommend(id) {
-        const response = await fetch(
-          `http://localhost:8080/poi/recommend/${id}`
-        );
-      }
-    </script>
-  </body>
+    async function ajaxRecommend(id) {
+      const response = await fetch(
+        `http://localhost:8080/poi/recommend/${id}`
+      );
+    }
+  </script>
+</body>
+
 </html>
