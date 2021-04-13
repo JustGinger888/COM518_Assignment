@@ -99,73 +99,70 @@
                 .setLatLng(e.latlng)
                 .setContent('Details for ' + e.latlng.toString() +
                     `<form onsubmit="ajaxAdd()" id="poiAdd">
-                    <div class="form-group">
-                        <input
-                        type="text"
-                        class="form-control my-1"
-                        name="name"
-                        id="name"
-                        placeholder="Name"
-                        autocomplete="off"
-                        required
-                        />
-                        <input
-                        type="text"
-                        name="type"
-                        id="type"
-                        class="form-control my-1"
-                        placeholder="Type"
-                        autocomplete="off"
-                        required
-                        />
-                        <input
-                        type="text"
-                        name="country"
-                        id="country"
-                        class="form-control my-1"
-                        autocomplete="off"
-                        placeholder="Country"
-                        required
-                        />
-                        <input
-                        type="text"
-                        name="region"
-                        id="region"
-                        class="form-control my-1"
-                        autocomplete="off"
-                        placeholder="Region"
-                        required
-                        />
-                        <div class="row">
-                            <div class="col-12 mt-1">
-                                Coordinates (lng & lat)
-                            </div>
-                            <div class="col-6">
-                                <input type="number" autocomplete="off" name="lon" id="lon" 
-                                class="form-control my-1" value="${e.latlng.lng}" required />
-                            </div>
-                            <div class="col-6">
-                                <input type="number"autocomplete="off" name="lat" id="lat" 
-                                class="form-control my-1" value="${e.latlng.lat}" required />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 mt-1">
-                                Description:
-                            </div>
-                            <div class="col-12">
-                                <textarea 
-                                name="description"
-                                id="description"
-                                class="form-control" 
-                                rows="3"
-                                placeholder="Point Of Interest Description"
-                                required></textarea>
-                            </div>
-                        </div>
-                    </div>
-                <button class="btn btn-outline-primary w-100" type="submit">Submit</button>
-                </form>`)
+    <p>Details</p>
+    <div class="form-group">
+        <input
+        type="text"
+        class="form-control mb-1"
+        name="name"
+        id="name"
+        placeholder="Name"
+        required
+        />
+        <input
+        type="text"
+        name="type"
+        id="type"
+        class="form-control my-1"
+        placeholder="Type"
+        required
+        />
+        <input
+        type="text"
+        name="country"
+        id="country"
+        class="form-control my-1"
+        placeholder="Country"
+        required
+        />
+        <input
+        type="text"
+        name="region"
+        id="region"
+        class="form-control my-1"
+        placeholder="Region"
+        required
+        />
+        <div class="row">
+            <div class="col-12 mt-1">
+                Coordinates (lng & lat)
+            </div>
+            <div class="col-6">
+                <input type="text" name="lon" id="lon" 
+                class="form-control my-1" value="${e.latlng.lng}" required />
+            </div>
+            <div class="col-6">
+                <input type="number" name="lat" id="lat" 
+                class="form-control my-1" value="${e.latlng.lat}" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-1">
+                Description:
+            </div>
+            <div class="col-12">
+                <textarea 
+                name="description"
+                id="description"
+                class="form-control" 
+                rows="3"
+                placeholder="Place Of Interest Description"
+                required></textarea>
+            </div>
+        </div>
+    </div>
+<button class="btn btn-outline-primary w-100" type="submit">Submit</button>
+</form>`)
                 .openOn(map);
             console.log(e.latlng);
         }
@@ -179,9 +176,6 @@
             });
 
         async function ajaxAdd() {
-            if (user) {
-                alert("User Signed In")
-            }
             const body = {
                 name: document.getElementById("name").value,
                 type: document.getElementById("type").value,
@@ -198,26 +192,26 @@
                 },
                 body: JSON.stringify(body),
             });
+        }
 
-            document
-                .getElementById("poiReview")
-                .addEventListener("submit", function (event) {
-                    event.preventDefault();
-                });
+        document
+            .getElementById("poiReview")
+            .addEventListener("submit", function (event) {
+                event.preventDefault();
+            });
 
-            async function ajaxReview(id) {
-                const body = {
-                    id: id,
-                    review: document.getElementById("review").value,
-                };
-                const response = await fetch("/poi/review", {
-                    method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    body: JSON.stringify(body),
-                });
-            }
+        async function ajaxReview(id) {
+            const body = {
+                id: id,
+                review: document.getElementById("review").value,
+            };
+            const response = await fetch("/poi/review", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(body),
+            });
         }
     </script>
     </body>
